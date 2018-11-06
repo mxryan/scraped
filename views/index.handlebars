@@ -1,2 +1,15 @@
-<h3>Hello!!!</h3>
-<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore debitis saepe sequi magnam dolor alias laboriosam provident? Officiis voluptas quae ad porro, provident ipsum possimus asperiores quia totam ipsam cum!</p>
+<div class="container">
+  <h3>Hello!!!</h3>
+  <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore debitis saepe sequi magnam dolor alias laboriosam provident? Officiis voluptas quae ad porro, provident ipsum possimus asperiores quia totam ipsam cum!</p>
+  <ul>
+    {{#each articles}}
+    	<li>
+    	   <a target="_blank" href={{this.link}}>{{this.title}}</a>
+         <button class="btn btn-info btn-block"value={{this._id}}>{{this._id}}</button>
+    	</li>
+    {{/each}}
+  </ul>
+</div>
+<script src="app.js">
+
+</script>

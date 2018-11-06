@@ -8,6 +8,11 @@ const ArticleSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  saved: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
   comment: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Comment"

@@ -1,3 +1,11 @@
+// todo :
+//  - update scrape route to delete all except where saved before scraping new guys
+//  - add a route to view all saved articles
+//  - frontend - add delete button and corresponding code
+//  - frontend - add save button and corresponding code
+//  - frontend - styling
+
+// less important: switch save route to put, 
 const express = require("express");
 const exphbs = require("express-handlebars");
 const mongoose = require("mongoose");
@@ -18,32 +26,57 @@ app.engine(
     })
 );
 app.set("view-engine", "handlebars");
-
 mongoose.connect("mongodb://localhost/scraped_db", { useNewUrlParser: true });
 
+// main page
 app.get("/", (req, res)=>{
-  res.render("index.handlebars");
+  db.Article.find().then(d => {
+    console.log(d);
+    res.render("index.handlebars", {articles: d})
+  })
 });
 
-app.get("/scrape", function(req, res) {
+// scrape route
+app.get("/api/scrape", function(req, res) {
   axios.get("https://www.cnn.com/health").then(function(response) {
     const $ = cheerio.load(response.data);
-    
     $("li article").each(function(i, element) {
       const out = {}
       const section = $(this).find("h3.cd__headline a");
-      out.link = section.attr("href");
+      out.link = "https://www.cnn.com" + section.attr("href");
       out.title = section.children("span.cd__headline-text").text();
       console.log(out);
+      db.Article.create(out).then(d => {
+        console.log(d);
+      }).catch(e => {
+        return console.log(e);
+      });
     });
-    res.send("Scrape Complete");
+    res.redirect("/");
   }).catch(err => {return console.log(err)});
 });
 
-app.post("/test/article", (req,res) => {
-  db.Article.create(req.body).then(d => res.json(d)).catch(e => console.log(e));
+// delete all except where saved is true
+app.get("/api/delete", (req, res) => {
+  db.Article.deleteMany({saved: false}).then(d => {
+    console.log(d);
+    res.json(d);
+  }).catch(e => {
+    return console.log(e);
+  })
+});
+
+// save an article of particular id
+app.get("/api/save/:id", (req, res) => {
+  console.log("hit save route");
+  db.Article.updateOne({_id: req.params.id}, {saved: true}).then(d => {
+    console.log(d);
+    res.json(d);
+  }).catch(e => {
+    return console.log(e);
+  })
 })
 
 app.listen(PORT, ()=>{
-  console.log("yup im on");
-})
+  console.log("Server listening");
+});
