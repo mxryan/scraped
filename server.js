@@ -26,10 +26,15 @@ app.get("/", (req, res)=>{
 });
 
 app.get("/scrape", function(req, res) {
-  axios.get("http://www.bbc.com/").then(function(response) {
+  axios.get("https://www.cnn.com/health").then(function(response) {
     const $ = cheerio.load(response.data);
-    $("h3.media__title").each(function(i, element) {
-      console.log($(this).children("a"));
+    
+    $("li article").each(function(i, element) {
+      const out = {}
+      const section = $(this).find("h3.cd__headline a");
+      out.link = section.attr("href");
+      out.title = section.children("span.cd__headline-text").text();
+      console.log(out);
     });
     res.send("Scrape Complete");
   }).catch(err => {return console.log(err)});
