@@ -1,15 +1,40 @@
-<div class="container">
-  <h3>Hello!!!</h3>
-  <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore debitis saepe sequi magnam dolor alias laboriosam provident? Officiis voluptas quae ad porro, provident ipsum possimus asperiores quia totam ipsam cum!</p>
-  <ul>
-    {{#each articles}}
-    	<li>
-    	   <a target="_blank" href={{this.link}}>{{this.title}}</a>
-         <button class="btn btn-info btn-block"value={{this._id}}>{{this._id}}</button>
-    	</li>
-    {{/each}}
-  </ul>
+<div class="jumbotron">
+  <div class="container">
+    <h1>scraped.</h1>
+    <br>
+    <h4>Click scrape to get started!</h4>
+    <hr>
+    <div class="row">
+      {{!-- scrape, clear, view saved --}}
+      <div class="col-md-4">
+        <button class="btn btn-primary">Scrape</button>
+        <hr>
+        <p>Hit scrape to pull headlines and links from CNN health. Why CNN health? Just because.</p>
+        
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-danger">Clear</button>
+        <hr>
+        <p>This button will clear all your current scrapes. Make sure you save the ones you want!</p>
+        
+      </div>
+      <div class="col-md-4">
+        <a href="/saved" class="btn btn-info">View Saved</a>
+        <hr>
+        <p>This button takes you to a page that lets you add comments to your saved articles. You can also unsave your saved articles from there.</p>
+      </div>
+    </div>
+  </div>
 </div>
-<script src="app.js">
+<div class="container">
+    {{#each articles}}
+    	<div>
+    	   <p><a target="_blank" href={{this.link}}>{{this.title}}</a></p>
+         <p><button class="btn btn-info save-button"value={{this._id}}>Save this article!</button></p>
+         <hr>
+    	</div>
+    {{/each}}
+</div>
+<script src="js/home.js">
 
 </script>

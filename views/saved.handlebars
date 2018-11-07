@@ -1,0 +1,28 @@
+<div class="jumbotron">
+  <div class="container">
+    <h1>scraped.</h1>
+    <h4>These are your saved articles</h4>
+    <div class="row">
+      {{!-- delete all, return home --}}
+      <div class="col-md-4"></div>
+      <div class="col-md-4">
+        <button class="btn btn-danger">Delete all</button>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-primary">Home</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+    {{#each articles}}
+    	<div>
+    	   <p><a target="_blank" href={{this.link}}>{{this.title}}</a></p>
+         <p><button class="btn btn-info save-button"value={{this._id}}>Save this article!</button></p>
+         <hr>
+    	</div>
+    {{/each}}
+</div>
+<script src="js/home.js">
+
+</script>

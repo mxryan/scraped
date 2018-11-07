@@ -1,9 +1,10 @@
 // todo :
 //  - update scrape route to delete all except where saved before scraping new guys
-//  - add a route to view all saved articles
+//  - update scrape route so that you cant pull duplicates
+//  - add "populate" functionality ****
 //  - frontend - add delete button and corresponding code
-//  - frontend - add save button and corresponding code
-//  - frontend - styling
+//  - frontend - add scrape button fnctionality
+//  - frontend - make save btns dissapear after you save. user will have to go to save page to unsave them
 
 // less important: switch save route to put, 
 const express = require("express");
@@ -33,8 +34,15 @@ app.get("/", (req, res)=>{
   db.Article.find().then(d => {
     console.log(d);
     res.render("index.handlebars", {articles: d})
-  })
+  }).catch(e => console.log(e));
 });
+
+// saved articles page
+app.get("/saved", (req, res) => {
+  db.Article.find({saved: true}).then(d => {
+    res.render("saved.handlebars", {articles: d})
+  }).catch(e => console.log(e));
+})
 
 // scrape route
 app.get("/api/scrape", function(req, res) {
