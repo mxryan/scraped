@@ -16,6 +16,10 @@ const ArticleSchema = new mongoose.Schema({
   comment: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Comment"
+  }],
+  note: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Note"
   }]
 });
 module.exports = mongoose.model("Article", ArticleSchema);
