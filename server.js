@@ -58,8 +58,6 @@ app.get("/saved", (req, res) => {
 
 // scrape route
 app.get("/api/scrape", function (req, res) {
-  
-  
   axios.get("https://www.cnn.com/health").then(function (response) {
     const $ = cheerio.load(response.data);
     $("li article").each(function (i, element) {
@@ -109,15 +107,13 @@ app.get("/api/save/:id", (req, res) => {
 
 // route for posting comment
 app.post("/api/comment/:articleID", (req, res) => {
-  // creates a new comment in the db
   db.Comment.create(req.body).then(function (dbComment) {
     console.log(req.body);
     console.log(dbComment);
-    // updates article with the new comment's id
     return db.Article.findOneAndUpdate(
-      {_id: req.params.id},
+      {_id: req.params.articleID},
       {$push:{comment: dbComment._id}},
-      {new: true, upsert: true});
+      {new: true});
     }).then(function (dbArticle) {
       console.log(dbArticle);
       res.json(dbArticle);
@@ -129,50 +125,12 @@ app.post("/api/comment/:articleID", (req, res) => {
 // route for associating comment with an article
 app.get("/api/comment/:articleID", (req, res) => {
   // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
-  db.Article.findOne({_id: req.params.id}).populate("comment").then(function (dbArticle) {
+  db.Article.findOne({_id: req.params.articleID}).populate("comment").then(function (dbArticle) {
       res.json(dbArticle);
     }).catch(function (err) {
       res.json(err);
     });
 });
-
-// TEST ROUTES DELETE LATER ************************************************
-
-// Route for grabbing a specific Article by id, populate it with it's note
-app.get("/articles/:id", function (req, res) {
-  db.Article.findOne({
-      _id: req.params.id
-    })
-    .populate("note")
-    .then(function (dbArticle) {
-      res.json(dbArticle);
-    })
-    .catch(function (err) {
-
-      res.json(err);
-    });
-});
-
-// Route for saving/updating an Article's associated Note
-app.post("/articles/:id", function (req, res) {
-  db.Note.create(req.body)
-    .then(function (dbNote) {
-      return db.Article.findOneAndUpdate({
-        _id: req.params.id
-      }, {
-        $push:{note: dbNote._id}
-      }, {
-        new: true
-      });
-    })
-    .then(function (dbArticle) {
-      res.json(dbArticle);
-    })
-    .catch(function (err) {
-      res.json(err);
-    });
-});
-// END TEST ROUTES *************************************************
 
 app.listen(PORT, () => {
   console.log("Server listening");
