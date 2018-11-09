@@ -3,6 +3,7 @@
     <h1>scraped.</h1>
     <br>
     <h4>Click scrape to get started!</h4>
+    
     <hr>
     <div class="row">
       {{!-- scrape, clear, view saved --}}
@@ -33,13 +34,13 @@
     <p><a target="_blank" href={{this.link}}>{{this.title}}</a></p>
     <p>
       {{#if this.saved}}
-      <button class="btn btn-info unsave-button" value={{this._id}}>
-        Already Saved!
+      <button class="btn btn-danger unsave-button" value={{this._id}}>
+        Unsave!
       </button>
       {{/if}}
       {{#unless this.saved}}
       <button class="btn btn-info save-button" value={{this._id}}>
-        Save this article!
+        Save!
       </button>
       {{/unless}}
     </p>

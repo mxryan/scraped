@@ -1,10 +1,3 @@
-// todo :
-//  - update scrape route to delete all except where saved before scraping new guys
-//  - update scrape route so that you cant pull duplicates
-// **** ADD COMMENTING ABILITY 
-// remove debuggin consolelogs
-
-// less important: make shit more restful 
 const express = require("express");
 const exphbs = require("express-handlebars");
 const mongoose = require("mongoose");
