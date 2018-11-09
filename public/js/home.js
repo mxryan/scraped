@@ -3,8 +3,30 @@ function setSaveBtns() {
   for (let i = 0; i < saveBtns.length; i++) {
     saveBtns[i].addEventListener("click", function () {
       let id = this.value;
-      fetch("/api/save/" + id).then(r => {
+      fetch("/api/save/" + id, {
+        method:"PUT",
+      }).then(r => {
         console.log(r);
+        location.reload();
+      }).catch(e => {
+        console.log(e);
+      });
+    });
+  }
+}
+
+function setUnsaveBtns() {
+  const unsaveBtns = document.querySelectorAll(".unsave-button");
+  for (let i = 0; i < unsaveBtns.length; i++) {
+    unsaveBtns[i].addEventListener("click", function() {
+      console.log("unsave btn clicked");
+      let id = this.value;
+      
+      fetch("/api/unsave/" + id, {
+        method:"PUT",
+      }).then(r => {
+        console.log(r);
+        location.reload();
       }).catch(e => {
         console.log(e);
       });
@@ -33,5 +55,6 @@ function setScrapeBtn() {
   })
 }
 setSaveBtns();
+setUnsaveBtns();
 setClearBtn();
 setScrapeBtn();

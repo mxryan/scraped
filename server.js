@@ -5,6 +5,7 @@
 //  - view-index: when save btn disappears replace with unsave
 //  - view-save - make unsave btn or delete btn?
 // **** ADD COMMENTING ABILITY 
+// remove debuggin consolelogs
 
 // less important: make shit more restful 
 const express = require("express");
@@ -35,8 +36,6 @@ mongoose.connect("mongodb://localhost/scraped_db", {
 
 // main page
 app.get("/", (req, res) => {
-  
-  
   db.Article.find().then(d => {
     console.log(d);
     res.render("index.handlebars", {
@@ -91,8 +90,7 @@ app.get("/api/delete", (req, res) => {
 });
 
 // save an article of particular id
-app.get("/api/save/:id", (req, res) => {
-  console.log("hit save route");
+app.put("/api/save/:id", (req, res) => {
   db.Article.updateOne({
     _id: req.params.id
   }, {
@@ -101,35 +99,56 @@ app.get("/api/save/:id", (req, res) => {
     console.log(d);
     res.json(d);
   }).catch(e => {
-    return console.log(e);
+    console.log(e);
   })
 });
+
+app.put("/api/unsave/:id", (req, res) => {
+  db.Article.updateOne({
+    _id: req.params.id
+  }, {
+    saved: false
+  }).then(d => {
+    console.log(d);
+    res.json(d);
+  }).catch(e => {
+    console.log(e);
+  })
+})
+
 
 // route for posting comment
 app.post("/api/comment/:articleID", (req, res) => {
   db.Comment.create(req.body).then(function (dbComment) {
     console.log(req.body);
     console.log(dbComment);
-    return db.Article.findOneAndUpdate(
-      {_id: req.params.articleID},
-      {$push:{comment: dbComment._id}},
-      {new: true});
-    }).then(function (dbArticle) {
-      console.log(dbArticle);
-      res.json(dbArticle);
-    }).catch(function (err) {
-      res.json(err);
+    return db.Article.findOneAndUpdate({
+      _id: req.params.articleID
+    }, {
+      $push: {
+        comment: dbComment._id
+      }
+    }, {
+      new: true
     });
+  }).then(function (dbArticle) {
+    console.log(dbArticle);
+    res.json(dbArticle);
+  }).catch(function (err) {
+    res.json(err);
+  });
 });
 
 // route for associating comment with an article
 app.get("/api/comment/:articleID", (req, res) => {
   // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
-  db.Article.findOne({_id: req.params.articleID}).populate("comment").then(function (dbArticle) {
-      res.json(dbArticle);
-    }).catch(function (err) {
-      res.json(err);
-    });
+  db.Article.findOne({
+    _id: req.params.articleID
+  }).populate("comment").then(function (dbArticle) {
+    res.json(dbArticle);
+  }).catch(function (err) {
+    res.json(err);
+  });
 });
 
 app.listen(PORT, () => {

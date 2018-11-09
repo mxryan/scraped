@@ -8,23 +8,43 @@
         <button class="btn btn-danger">Delete all</button>
       </div>
       <div class="col-md-4">
-        <button class="btn btn-primary">Home</button>
+        <a href="/" class="btn btn-primary">Home</a>
       </div>
     </div>
   </div>
 </div>
 <div class="container">
-    {{#each articles}}
-    	<div>
-    	   <p><a target="_blank" href={{this.link}}>{{this.title}}</a></p>
-         <p><button class="btn btn-info delete-button"value={{this._id}}>Unsave this article!</button></p>
-         <form class="comment-form">
-           <textarea class="comment-area" cols="30" rows="10" ></textarea>
-           <button type="submit"></button>
-         </form>
-         <hr>
-    	</div>
-    {{/each}}
+  {{#each articles}}
+  <div class="row">
+    {{!-- area for displaying title and comments --}}
+    <div class="col-md-6">
+      <p><a target="_blank" href={{this.link}}>{{this.title}}</a></p>
+    </div>
+
+    {{!-- area for submitting comments --}}
+    <div class="col-md-6">
+      <form class="comment-form">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Title: </span>
+          </div>
+          <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+        </div>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Your comment:</span>
+          </div>
+          <textarea class="form-control" aria-label="With textarea"></textarea>
+        </div>
+        <br>
+        <button type="submit">Submit!</button>
+        <hr>
+      </form>
+    </div>
+    <hr>
+
+  </div>
+  {{/each}}
 </div>
 <script src="js/saved.js">
 
