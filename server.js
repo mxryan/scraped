@@ -1,9 +1,6 @@
 // todo :
 //  - update scrape route to delete all except where saved before scraping new guys
 //  - update scrape route so that you cant pull duplicates
-//  - view-index - make save btns dissapear after you save. user will have to go to save page to unsave them
-//  - view-index: when save btn disappears replace with unsave
-//  - view-save - make unsave btn or delete btn?
 // **** ADD COMMENTING ABILITY 
 // remove debuggin consolelogs
 
@@ -30,10 +27,16 @@ app.engine(
   })
 );
 app.set("view-engine", "handlebars");
-mongoose.connect("mongodb://localhost/scraped_db", {
-  useNewUrlParser: true
-});
 
+if (process.env.MONGODB_URI) {
+  mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true
+  });
+} else {
+  mongoose.connect("mongodb://localhost/scraped_db", {
+    useNewUrlParser: true
+  });
+}
 // main page
 app.get("/", (req, res) => {
   db.Article.find().then(d => {
