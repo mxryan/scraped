@@ -11,6 +11,7 @@ function setSubmitCommentBtn() {
       const out = {}
       out.title = titleInput.value;
       out.body = msgInput.value;
+      out.associatedArticleID = subBtn.dataset.val;
       fetch("/api/comment/" + subBtn.dataset.val, {
         method: "POST",
         headers: {
@@ -32,10 +33,13 @@ function populateComments(){
     fetch("/api/comment/" + titles[i].dataset.id).then(res=>{
       return res.json();
     }).then(d => {
+      console.log(d);
       const comments = d.comment;
       for (let j = 0; j < comments.length; j++) {
         console.log(comments[j].title);
         console.log(comments[j].body);
+
+        console.log(comments[j].associatedArticleID);
         const wrapper = document.createElement("div");
         const titleDisplay = document.createElement("h5");
         const bodyDisplay = document.createElement("p");
@@ -43,6 +47,8 @@ function populateComments(){
         bodyDisplay.textContent = comments[j].body;
         wrapper.appendChild(titleDisplay);
         wrapper.appendChild(bodyDisplay);
+        document.getElementById(comments[j].associatedArticleID).appendChild(wrapper);
+        
         
       }
     }).catch(e => {

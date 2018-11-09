@@ -122,11 +122,7 @@ app.put("/api/unsave/:id", (req, res) => {
 
 // route for posting comment
 app.post("/api/comment/:articleID", (req, res) => {
-  console.log("hit comment posting route");
-  console.log(req.body);
   db.Comment.create(req.body).then(function (dbComment) {
-    console.log(req.body);
-    console.log(dbComment);
     return db.Article.findOneAndUpdate({
       _id: req.params.articleID
     }, {
