@@ -17,11 +17,15 @@
   {{#each articles}}
   <div class="row">
     {{!-- area for displaying title and comments --}}
-    <div class="col-md-6">
-      <p><a target="_blank" href={{this.link}}>{{this.title}}</a></p>
+    <div class="col-md-6" data-id={{this._id}}>
+      <p>
+        <a target="_blank" data-id={{this._id}} class="article-title-link" href={{this.link}}>
+          {{this.title}}
+        </a>
+      </p>
     </div>
 
-    {{!-- area for submitting comments --}}
+    {{!-- DO NOT MODIFY ORDER OF ELEMENTS. JS IS DEPENDENT --}}
     <div class="col-md-6">
       <form class="comment-form">
         <div class="input-group mb-3">

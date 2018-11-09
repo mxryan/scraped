@@ -1,6 +1,6 @@
 // element.dataset.val for the id
 
-function submitComment() {
+function setSubmitCommentBtn() {
   const formGroups = document.querySelectorAll(".comment-form");
   for (let i = 0; i < formGroups.length; i++){
     // this feels super hacky... 
@@ -23,7 +23,32 @@ function submitComment() {
         console.log(e);
       });
     })
-
   }
 }
-submitComment();
+
+function populateComments(){
+  const titles = document.querySelectorAll(".article-title-link");
+  for (let i = 0; i < titles.length; i++) {
+    fetch("/api/comment/" + titles[i].dataset.id).then(res=>{
+      return res.json();
+    }).then(d => {
+      const comments = d.comment;
+      for (let j = 0; j < comments.length; j++) {
+        console.log(comments[j].title);
+        console.log(comments[j].body);
+        const wrapper = document.createElement("div");
+        const titleDisplay = document.createElement("h5");
+        const bodyDisplay = document.createElement("p");
+        titleDisplay.textContent = comments[j].title;
+        bodyDisplay.textContent = comments[j].body;
+        wrapper.appendChild(titleDisplay);
+        wrapper.appendChild(bodyDisplay);
+        
+      }
+    }).catch(e => {
+      console.log(e);
+    })
+  }
+}
+populateComments();
+setSubmitCommentBtn();
